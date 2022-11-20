@@ -32,13 +32,7 @@ class Camera:
             x = max(-(1024), x)
             y = max(-(768 - HEIGHT), y)
             self.camera = pg.Rect(x, y, self.width, self.height)
-        elif target.y < (768 + (HEIGHT/2)):
-            x = min(0, x)
-            y = min(0, y)
-            x = max(-(0), x)
-            y = max(-(self.height - HEIGHT), y)
-            self.camera = pg.Rect(x, y, self.width, self.height)
-        elif target.y > (768 + (HEIGHT/2)):
+        else:
             x = min(0, x)
             y = min(0, y)
             x = max(-(self.width - WIDTH), x)

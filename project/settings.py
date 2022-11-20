@@ -11,7 +11,7 @@ BLUE = (0, 0, 255)
 WIDTH = 1024   # 16 * 64 or 32 * 32 or 64 * 16
 HEIGHT = 768  # 16 * 48 or 32 * 24 or 64 * 12
 FPS = 60
-TITLE = "Tilemap Demo"
+TITLE = "Adventures of Aldrea"
 BGCOLOR = GREEN
 
 TILESIZE = 32
@@ -20,3 +20,5 @@ GRIDHEIGHT = HEIGHT / TILESIZE
 
 #player's settings
 PLAYER_SPEED = 300
+
+ENEMY_SPEED = 200

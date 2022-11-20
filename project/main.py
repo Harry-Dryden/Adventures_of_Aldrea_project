@@ -27,10 +27,12 @@ class Game:
             for col, tile in enumerate(tiles):
                 if tile == '1':
                     Wall(self, col, row)
-                if tile == 'P':
-                    self.player = Player(self, col, row)
                 if tile == '2':
                     Door(self, col, row)
+                if tile == 'P':
+                    self.player = Player(self, col, row)
+                if tile == 'E':
+                    Enemy(self, col, row)
         self.camera = Camera(self.map.width, self.map.height)
 
     def run(self):
