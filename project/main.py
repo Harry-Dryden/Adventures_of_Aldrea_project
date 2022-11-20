@@ -6,14 +6,17 @@ from sprites import *
 from tilemap import *
 
 class Game:
+    # initialising the game
     def __init__(self):
         pg.init()
+        #setting up the screen
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
         pg.display.set_caption(TITLE)
         self.clock = pg.time.Clock()
         pg.key.set_repeat(500, 100)
         run_once = True
         while run_once == True:
+            #loading up the map file
             game_folder = path.dirname(__file__)
             self.map = Map(path.join(game_folder, 'map.txt'))
             run_once = False
@@ -23,6 +26,7 @@ class Game:
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
         self.doors = pg.sprite.Group()
+        #creating the map
         for row, tiles in enumerate(self.map.data):
             for col, tile in enumerate(tiles):
                 if tile == '1':
