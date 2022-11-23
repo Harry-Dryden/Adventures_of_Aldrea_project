@@ -1,4 +1,3 @@
-from turtle import Screen
 import pygame as pg
 from settings import *
 
@@ -26,16 +25,9 @@ class Camera:
     def update(self, target):
         x = -target.rect.x + int(WIDTH / 2)
         y = -target.rect.y + int(HEIGHT / 2)
-        if target.x > 1056 and target.y > 32 and target.x < 1985 and target.y < 705: # if the special room is entered
-            x = min(-1024, x)
-            y = min(0, y)
-            x = max(-(1024), x)
-            y = max(-(768 - HEIGHT), y)
-            self.camera = pg.Rect(x, y, self.width, self.height)
-        else:
-            x = min(0, x)
-            y = min(0, y)
-            x = max(-(self.width - WIDTH), x)
-            y = max(-(self.height - HEIGHT), y)
-            self.camera = pg.Rect(x, y, self.width, self.height)
+        x = min(0, x)
+        y = min(0, y)
+        x = max(-(self.width - WIDTH), x)
+        y = max(-(self.height - HEIGHT), y)
+        self.camera = pg.Rect(x, y, self.width, self.height)
 

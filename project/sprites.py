@@ -21,26 +21,28 @@ class Player(pg.sprite.Sprite):
         self.dodging = False
         self.permdodge = 1500
         self.dodgecounter = 0
+        self.attackCounter = 0
 
     def get_keys(self):
         self.vx, self.vy = 0, 0
         keys = pg.key.get_pressed()
-        if keys[pg.K_a]:
-            self.vx = -PLAYER_SPEED
-        if keys[pg.K_d]:
-            self.vx = PLAYER_SPEED
-        if keys[pg.K_w]:
-            self.vy = -PLAYER_SPEED
-        if keys[pg.K_s]:
-            self.vy = PLAYER_SPEED
-        if self.vx != 0 and self.vy != 0:
-            self.vx *= 0.7
-            self.vy *= 0.7
-        if keys[pg.K_LSHIFT]:
-            self.dodge()
-        if keys[pg.K_SPACE]:
-            self.attack()
-            self.attacking = True
+        if self.attacking == False:
+            if keys[pg.K_a]:
+                self.vx = -PLAYER_SPEED
+            if keys[pg.K_d]:
+                self.vx = PLAYER_SPEED
+            if keys[pg.K_w]:
+                self.vy = -PLAYER_SPEED
+            if keys[pg.K_s]:
+                self.vy = PLAYER_SPEED
+            if self.vx != 0 and self.vy != 0:
+                self.vx *= 0.7
+                self.vy *= 0.7
+            if keys[pg.K_LSHIFT]:
+                self.dodge()
+            if keys[pg.K_SPACE]:
+                self.attack()
+                self.attacking = True
 
     def collideWithWalls(self, dir):
         if dir == 'x':
@@ -117,8 +119,22 @@ class Player(pg.sprite.Sprite):
             self.image = pg.image.load("playerU.png")
         
     def attack(self):
-        print("Attacking")
-        self.attacking = False
+        if self.attackCounter == 60:
+            self.attacking = False
+            self.attackCounter = 0
+#        if self.attackCounter == 0:
+        if self.attackCounter < 60:
+            print("Attacking")
+            self.attackCounter += 1
+            if self.direction == "DOWN":
+                self.image = pg.image.load("playerDA.png")
+            if self.direction == "UP":
+                self.image = pg.image.load("playerUA.png")
+            if self.direction == "RIGHT":
+                self.image = pg.image.load("playerRA.png")
+            if self.direction == "LEFT":
+                self.image = pg.image.load("playerLA.png")
+        print(self.attackCounter)
 
     def update(self):
         keys = pg.key.get_pressed()
@@ -136,19 +152,13 @@ class Player(pg.sprite.Sprite):
             print(yPos)
             print('x:')
             print(xPos)
-        if xPos >= 192 and xPos < 260 and yPos >= 224 and yPos <= 240:
-            self.x = 1504
-            self.y = 672
-        if xPos >= 1504 and xPos < 1568 and yPos <= 704 and yPos >=690:
-            self.x = 192
-            self.y = 256
         self.dodgecounter += 1
         if self.dodging == True: #if you're dodging
             self.dodge()
         self.getDirection()
         if self.attacking == True:
             self.attack()
-        print(self.direction)
+#        print(self.direction)
 
 class Wall(pg.sprite.Sprite):
     def __init__(self, game, x, y):
@@ -175,6 +185,17 @@ class Door(pg.sprite.Sprite):
         self.y = y * TILESIZE
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
+
+    def enterDoor(self, target, num):
+        xPos = target.rect.x
+        yPos = target.rect.y
+#        print(num)
+        if num == 1:
+            if xPos >= 192 and xPos < 260 and yPos >= 224 and yPos <= 240:
+                return True
+        if num == 2:
+            if xPos >= 448 and xPos < 512 and yPos <= 690 and yPos >=658:
+                return True
 
 class Enemy(pg.sprite.Sprite):
     def __init__(self, game, x, y):
@@ -253,11 +274,11 @@ class Enemy(pg.sprite.Sprite):
 
     def update(self):
         self.enemyCounter += 1
-        print(self.enemyCounter)
+#        print(self.enemyCounter)
         if self.enemyCounter >= 200:
             self.enemyRandom = random.randint(1,8)
             self.enemyCounter = 0
-            print(self.enemyRandom)
+#            print(self.enemyRandom)
         self.move()
         self.x += self.vx * self.game.dt
         self.y += self.vy * self.game.dt
