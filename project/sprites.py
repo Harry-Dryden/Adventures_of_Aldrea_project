@@ -117,6 +117,7 @@ class Player(pg.sprite.Sprite):
         if self.vx < 0 and self.vy < 0:
             self.direction = "UPLEFT"
             self.image = pg.image.load("playerU.png")
+        return self.direction
         
     def attack(self):
         if self.attackCounter == 60:
@@ -124,17 +125,13 @@ class Player(pg.sprite.Sprite):
             self.attackCounter = 0
 #        if self.attackCounter == 0:
         if self.attackCounter < 60:
-            print("Attacking")
             self.attackCounter += 1
-            if self.direction == "DOWN":
-                self.image = pg.image.load("playerDA.png")
-            if self.direction == "UP":
-                self.image = pg.image.load("playerUA.png")
-            if self.direction == "RIGHT":
-                self.image = pg.image.load("playerRA.png")
-            if self.direction == "LEFT":
-                self.image = pg.image.load("playerLA.png")
-        print(self.attackCounter)
+#            Sword(self, self.x, self.y, self.direction)
+#        print(self.attackCounter)
+
+    def isAttacking(self):
+        if self.attacking == True:
+            return True
 
     def update(self):
         keys = pg.key.get_pressed()
@@ -161,12 +158,15 @@ class Player(pg.sprite.Sprite):
 #        print(self.direction)
 
 class Wall(pg.sprite.Sprite):
-    def __init__(self, game, x, y):
+    def __init__(self, game, x, y, inside):
         self.groups = game.all_sprites, game.walls
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.image = pg.Surface((TILESIZE, TILESIZE))
-        self.image.fill(LIGHTGREY)
+        if inside == True:
+            self.image.fill(RED)
+        if inside == False:
+            self.image = pg.image.load("wall.png")
         self.rect = self.image.get_rect()
         self.x = x
         self.y = y
@@ -174,12 +174,15 @@ class Wall(pg.sprite.Sprite):
         self.rect.y = y * TILESIZE
 
 class Door(pg.sprite.Sprite):
-    def __init__(self, game, x, y):
+    def __init__(self, game, x, y, inside):
         self.groups = game.all_sprites
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.image = pg.Surface((TILESIZE, TILESIZE))
-        self.image.fill(BLACK)
+        if inside == True:
+            self.image.fill(BROWN)
+        if inside == False:
+            self.image.fill(BLACK)
         self.rect = self.image.get_rect()
         self.x = x * TILESIZE
         self.y = y * TILESIZE
@@ -189,14 +192,35 @@ class Door(pg.sprite.Sprite):
     def enterDoor(self, target, num):
         xPos = target.rect.x
         yPos = target.rect.y
-#        print(num)
         if num == 1:
             if xPos >= 192 and xPos < 260 and yPos >= 224 and yPos <= 240:
                 return True
         if num == 2:
             if xPos >= 448 and xPos < 512 and yPos <= 690 and yPos >=658:
                 return True
-
+'''
+class Sword(pg.sprite.Sprite):
+    def __init__(self, game, x, y, direction):
+        self.groups = game.all_sprites
+        self.image = pg.Surface((TILESIZE, TILESIZE))
+        self.image.fill(LIGHTGREY)
+        self.rect = self.image.get_rect()
+        if direction == "UP":
+            x = x + 32
+        if direction == "DOWN":
+            x = x - 32
+        if direction == "LEFT":
+            y = y - 32
+        if direction == "RIGHT":
+            y = y + 32
+        self.x = x
+        self.y = y
+        self.rect.x = x
+        self.rect.y = y
+        print(self.x)
+        print(self.y)
+        print(direction)
+'''
 class Enemy(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.all_sprites

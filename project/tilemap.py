@@ -30,4 +30,3 @@ class Camera:
         x = max(-(self.width - WIDTH), x)
         y = max(-(self.height - HEIGHT), y)
         self.camera = pg.Rect(x, y, self.width, self.height)
-
